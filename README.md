@@ -1,6 +1,7 @@
 # Universidade - Sistema de Gerenciamento Acadêmico
 
 Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, cursos, matrículas e áreas de estudo em uma universidade. O banco de dados foi desenvolvido utilizando MySQL e inclui tabelas para armazenar informações essenciais.
+![](universidade.png)
 
 ## Estrutura do Banco de Dados
 
