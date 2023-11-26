@@ -44,122 +44,148 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
 
 ## Procedures e Functions
 
-```sql
-DELIMITER //
-
-CREATE PROCEDURE InserirCurso (
-    IN p_nomeCurso VARCHAR(45),
-    IN p_area_id INT
-)
-BEGIN
-    INSERT INTO cursos (nomeCurso, area_id)
-    VALUES (p_nomeCurso, p_area_id);
-END //
-
-DELIMITER ;
-
-```sql
-DELIMITER //
-
-CREATE PROCEDURE SelecionarCursosPorArea (
-    IN p_area_id INT
-)
-BEGIN
-    SELECT *
-    FROM cursos
-    WHERE area_id = p_area_id;
-END //
-
-DELIMITER ;
-
+1. **Inserir cursos**: Procedure que insere o curso, passando o nome e o id da área a qual o curso pertence
    ```sql
-DELIMITER //
+   DELIMITER //
 
-CREATE PROCEDURE InserirAluno (
-    IN nomeAlunoParam VARCHAR(45),
-    IN sobrenomeAlunoParam VARCHAR(45)
-)
-BEGIN
-    DECLARE emailAlunoParam VARCHAR(45);
+   CREATE PROCEDURE InserirCurso (
+       IN p_nomeCurso VARCHAR(45),
+       IN p_area_id INT
+   )
+   BEGIN
+       INSERT INTO cursos (nomeCurso, area_id)
+       VALUES (p_nomeCurso, p_area_id);
+   END //
 
-    SET emailAlunoParam = CONCAT(nomeAlunoParam, '.', sobrenomeAlunoParam,  '@facens.br');
+   DELIMITER ;
 
-    INSERT INTO alunos (nome, sobrenome, email)
-    VALUES (nomeAlunoParam, sobrenomeAlunoParam, emailAlunoParam);
-END //
-
-DELIMITER ;
-
+2. **Seleciona o curso pela área**: Seleciona os cursos pertencentes a determinada área passando o id desta
    ```sql
-DELIMITER //
+   DELIMITER //
 
-CREATE FUNCTION ObterIDdoCurso (
-    p_nomeCurso VARCHAR(45),
-    p_nomeArea VARCHAR(45)
-)
-RETURNS INT
-BEGIN
-    DECLARE cursoID INT;
+   CREATE PROCEDURE SelecionarCursosPorArea (
+       IN p_area_id INT
+   )
+   BEGIN
+       SELECT *
+       FROM cursos
+       WHERE area_id = p_area_id;
+   END //
 
-    SELECT cursos.id INTO cursoID
-    FROM cursos
-    INNER JOIN areas ON cursos.area_id = areas.id
-    WHERE cursos.nomeCurso = p_nomeCurso AND areas.nomeArea = p_nomeArea;
+   DELIMITER ;
 
-    RETURN cursoID;
-END //
-
-DELIMITER ;
-
+3. **Inserir aluno**: Insere o aluno passando nome e sobrenom e gera o email automaticamente
    ```sql
-DELIMITER //
+   DELIMITER //
 
-CREATE PROCEDURE FazerMatricul (
-    IN p_nomeAluno VARCHAR(45),
-    IN p_sobrenomeAluno VARCHAR(45),
-    IN p_nomeCurso VARCHAR(45),
-    IN p_nomeArea VARCHAR(45)
-)
-BEGIN
-    DECLARE alunoID INT;
-    DECLARE cursoID INT;
-    DECLARE matriculaExistente INT;
+   CREATE PROCEDURE InserirAluno (
+       IN nomeAlunoParam VARCHAR(45),
+       IN sobrenomeAlunoParam VARCHAR(45)
+   )
+   BEGIN
+       DECLARE emailAlunoParam VARCHAR(45);
 
+       SET emailAlunoParam = CONCAT(nomeAlunoParam, '.', sobrenomeAlunoParam,  '@facens.br');
 
-    SELECT id INTO alunoID FROM alunos WHERE nome = p_nomeAluno AND sobrenome = p_sobrenomeAluno;
+       INSERT INTO alunos (nome, sobrenome, email)
+       VALUES (nomeAlunoParam, sobrenomeAlunoParam, emailAlunoParam);
+   END //
 
+   DELIMITER ;
 
-    SELECT cursos.id INTO cursoID
-    FROM cursos
-    INNER JOIN areas ON cursos.area_id = areas.id
-    WHERE cursos.nomeCurso = p_nomeCurso AND areas.nomeArea = p_nomeArea;
+4. **Obtem o id do curso**: Obtem o id do curso passando seu nome e sua área
+      ```sql
+   DELIMITER //
 
+   CREATE FUNCTION ObterIDdoCurso (
+       p_nomeCurso VARCHAR(45),
+       p_nomeArea VARCHAR(45)
+   )
+   RETURNS INT
+   BEGIN
+       DECLARE cursoID INT;
 
-    SELECT COUNT(*) INTO matriculaExistente FROM matriculas WHERE aluno_id = alunoID;
+       SELECT cursos.id INTO cursoID
+       FROM cursos
+       INNER JOIN areas ON cursos.area_id = areas.id
+       WHERE cursos.nomeCurso = p_nomeCurso AND areas.nomeArea = p_nomeArea;
 
-    IF alunoID IS NOT NULL AND cursoID IS NOT NULL AND matriculaExistente = 0 THEN
-        INSERT INTO matriculas (aluno_id, curso_id) VALUES (alunoID, cursoID);
-        SELECT 'Matrícula realizada com sucesso!' AS Mensagem;
-    ELSE
-        SELECT 'Não foi possível realizar a matrícula. Verifique os dados informados ou o status de matrícula do aluno.' AS Mensagem;
-    END IF;
-END //
+       RETURN cursoID;
+   END //
 
-DELIMITER ;
-   ```sql
-DELIMITER //
+   DELIMITER ;
 
-CREATE PROCEDURE ConsultarMatriculasCursosAlunos()
-BEGIN
-    SELECT
-        matriculas.id AS 'ID da Matrícula',
-        cursos.nomeCurso AS 'Nome do Curso',
-        CONCAT(alunos.nome, ' ', alunos.sobrenome) AS 'Nome do Aluno',
-        alunos.email AS 'Email do Aluno'
-    FROM
-        matriculas
-    INNER JOIN cursos ON matriculas.curso_id = cursos.id
-    INNER JOIN alunos ON matriculas.aluno_id = alunos.id;
-END //
+5. **Faz a matrícula**: Matrícula os alunos passando nome, sobrenome, curso e área
+      ```sql
+   DELIMITER //
+   
+   CREATE PROCEDURE FazerMatricul (
+       IN p_nomeAluno VARCHAR(45),
+       IN p_sobrenomeAluno VARCHAR(45),
+       IN p_nomeCurso VARCHAR(45),
+       IN p_nomeArea VARCHAR(45)
+   )
+   BEGIN
+       DECLARE alunoID INT;
+       DECLARE cursoID INT;
+       DECLARE matriculaExistente INT;
+   
+   
+       SELECT id INTO alunoID FROM alunos WHERE nome = p_nomeAluno AND sobrenome = p_sobrenomeAluno;
+   
+   
+       SELECT cursos.id INTO cursoID
+       FROM cursos
+       INNER JOIN areas ON cursos.area_id = areas.id
+       WHERE cursos.nomeCurso = p_nomeCurso AND areas.nomeArea = p_nomeArea;
+   
+   
+       SELECT COUNT(*) INTO matriculaExistente FROM matriculas WHERE aluno_id = alunoID;
+   
+       IF alunoID IS NOT NULL AND cursoID IS NOT NULL AND matriculaExistente = 0 THEN
+           INSERT INTO matriculas (aluno_id, curso_id) VALUES (alunoID, cursoID);
+           SELECT 'Matrícula realizada com sucesso!' AS Mensagem;
+       ELSE
+           SELECT 'Não foi possível realizar a matrícula. Verifique os dados informados ou o status de matrícula do aluno.' AS Mensagem;
+       END IF;
+   END //
+   
+   DELIMITER ;
 
-DELIMITER ;
+6. **Busca todos os dados**: Busca todos os dados do banco
+      ```sql
+   DELIMITER //
+   
+   CREATE PROCEDURE ConsultarMatriculasCursosAlunos()
+   BEGIN
+       SELECT
+           matriculas.id AS 'ID da Matrícula',
+           cursos.nomeCurso AS 'Nome do Curso',
+           CONCAT(alunos.nome, ' ', alunos.sobrenome) AS 'Nome do Aluno',
+           alunos.email AS 'Email do Aluno'
+       FROM
+           matriculas
+       INNER JOIN cursos ON matriculas.curso_id = cursos.id
+       INNER JOIN alunos ON matriculas.aluno_id = alunos.id;
+   END //
+   
+   DELIMITER ;
+
+## Inserindo dados para teste
+INSERT INTO areas (nomeArea) VALUES ('Engenharia e Tecnologia');
+INSERT INTO areas (nomeArea) VALUES ('Tecnologia da Informação');
+INSERT INTO areas (nomeArea) VALUES ('Ciências Sociais Aplicadas');
+
+CALL InserirCurso('Engenharia Mecânica', 1);
+CALL InserirCurso('Engenharia Elétrica', 1);
+CALL InserirCurso('Engenharia de Software', 2);
+CALL InserirCurso('Banco de Dados', 2);
+CALL InserirCurso('Administração de Empresas', 3);
+
+CALL InserirAluno('Joao', 'Silva');
+CALL InserirAluno('Maria', 'Santos');
+CALL InserirAluno('Pedro', 'Ferreira');
+
+CALL FazerMatricul('Joao', 'Silva', 'Engenharia Mecânica', 'Engenharia e Tecnologia');
+CALL FazerMatricul('Maria', 'Santos', 'Engenharia Elétrica', 'Engenharia e Tecnologia');
+CALL FazerMatricul('Pedro', 'Ferreira', 'Administração de Empresas', 'Ciências Sociais Aplicadas');
