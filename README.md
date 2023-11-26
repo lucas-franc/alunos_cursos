@@ -173,7 +173,7 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
    DELIMITER ;
 
 ## Inserindo dados para teste
-    ```sql
+ ```sql
    INSERT INTO areas (nomeArea) VALUES ('Engenharia e Tecnologia');
    INSERT INTO areas (nomeArea) VALUES ('Tecnologia da Informação');
    INSERT INTO areas (nomeArea) VALUES ('Ciências Sociais Aplicadas');
