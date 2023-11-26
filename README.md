@@ -172,20 +172,21 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
    DELIMITER ;
 
 ## Inserindo dados para teste
-INSERT INTO areas (nomeArea) VALUES ('Engenharia e Tecnologia');
-INSERT INTO areas (nomeArea) VALUES ('Tecnologia da Informação');
-INSERT INTO areas (nomeArea) VALUES ('Ciências Sociais Aplicadas');
-
-CALL InserirCurso('Engenharia Mecânica', 1);
-CALL InserirCurso('Engenharia Elétrica', 1);
-CALL InserirCurso('Engenharia de Software', 2);
-CALL InserirCurso('Banco de Dados', 2);
-CALL InserirCurso('Administração de Empresas', 3);
-
-CALL InserirAluno('Joao', 'Silva');
-CALL InserirAluno('Maria', 'Santos');
-CALL InserirAluno('Pedro', 'Ferreira');
-
-CALL FazerMatricul('Joao', 'Silva', 'Engenharia Mecânica', 'Engenharia e Tecnologia');
-CALL FazerMatricul('Maria', 'Santos', 'Engenharia Elétrica', 'Engenharia e Tecnologia');
-CALL FazerMatricul('Pedro', 'Ferreira', 'Administração de Empresas', 'Ciências Sociais Aplicadas');
+    ```sql
+   INSERT INTO areas (nomeArea) VALUES ('Engenharia e Tecnologia');
+   INSERT INTO areas (nomeArea) VALUES ('Tecnologia da Informação');
+   INSERT INTO areas (nomeArea) VALUES ('Ciências Sociais Aplicadas');
+   
+   CALL InserirCurso('Engenharia Mecânica', 1);
+   CALL InserirCurso('Engenharia Elétrica', 1);
+   CALL InserirCurso('Engenharia de Software', 2);
+   CALL InserirCurso('Banco de Dados', 2);
+   CALL InserirCurso('Administração de Empresas', 3);
+   
+   CALL InserirAluno('Joao', 'Silva');
+   CALL InserirAluno('Maria', 'Santos');
+   CALL InserirAluno('Pedro', 'Ferreira');
+   
+   CALL FazerMatricul('Joao', 'Silva', 'Engenharia Mecânica', 'Engenharia e Tecnologia');
+   CALL FazerMatricul('Maria', 'Santos', 'Engenharia Elétrica', 'Engenharia e Tecnologia');
+   CALL FazerMatricul('Pedro', 'Ferreira', 'Administração de Empresas', 'Ciências Sociais Aplicadas');
