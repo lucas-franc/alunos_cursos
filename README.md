@@ -173,7 +173,7 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
    DELIMITER ;
 
 ## Inserindo dados para teste
- ```sql
+ ```
    INSERT INTO areas (nomeArea) VALUES ('Engenharia e Tecnologia');
    INSERT INTO areas (nomeArea) VALUES ('Tecnologia da Informação');
    INSERT INTO areas (nomeArea) VALUES ('Ciências Sociais Aplicadas');
@@ -191,3 +191,4 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
    CALL FazerMatricul('Joao', 'Silva', 'Engenharia Mecânica', 'Engenharia e Tecnologia');
    CALL FazerMatricul('Maria', 'Santos', 'Engenharia Elétrica', 'Engenharia e Tecnologia');
    CALL FazerMatricul('Pedro', 'Ferreira', 'Administração de Empresas', 'Ciências Sociais Aplicadas');
+```
