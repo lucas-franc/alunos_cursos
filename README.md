@@ -14,3 +14,12 @@ Este é um sistema de gerenciamento acadêmico criado para a gestão de alunos, 
        sobrenome VARCHAR(45),
        email VARCHAR(45)
    );
+
+
+2. **áreas**:  Contém informações sobre as áreas de estudo disponíveis.
+   ```sql
+   CREATE TABLE areas (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nomeArea VARCHAR(45)
+   );
+   
